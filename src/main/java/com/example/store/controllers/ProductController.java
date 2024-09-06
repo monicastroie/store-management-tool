@@ -5,6 +5,7 @@ import com.example.store.entities.Product;
 import com.example.store.services.ProductService;
 import java.util.List;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,12 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/store")
+@RequiredArgsConstructor
 public class ProductController {
 
-  @Autowired
-  private ProductService productService;
-  @Autowired
-  private ProductDao productDao;
+  private final ProductService productService;
+  private final ProductDao productDao;
 
   @PostMapping("/product")
   public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
