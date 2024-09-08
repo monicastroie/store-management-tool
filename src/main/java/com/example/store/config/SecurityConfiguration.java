@@ -30,6 +30,7 @@ public class SecurityConfiguration {
         .permitAll()
         .requestMatchers("/api/v1/auth/**")
         .permitAll()
+        .requestMatchers("/api/v1/store/**").permitAll()
         .anyRequest()
         .authenticated()
         .and()

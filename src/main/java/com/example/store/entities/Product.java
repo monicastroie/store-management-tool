@@ -39,10 +39,6 @@ public class Product implements Serializable {
   @Column(nullable = false)
   private String description;
 
-//  @ManyToOne(fetch = FetchType.LAZY)
-//  @JoinColumn(name = "categoryId", referencedColumnName = "id", nullable = false)
-//  private ItemCategory category;
-
   private Double price;
 
   private Integer initialQuantity;
