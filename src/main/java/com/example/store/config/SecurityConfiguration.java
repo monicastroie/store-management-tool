@@ -1,5 +1,7 @@
 package com.example.store.config;
 
+import static com.example.store.entities.Role.USER;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +28,8 @@ public class SecurityConfiguration {
         .csrf()
         .disable()
         .authorizeHttpRequests()
+        .requestMatchers("/h2-console/**")
+        .permitAll()
         .requestMatchers("/api/v1/auth/**")
         .permitAll()
         .anyRequest()
@@ -36,6 +40,7 @@ public class SecurityConfiguration {
         .and()
         .authenticationProvider(authenticationProvider)
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+    httpSecurity.headers().frameOptions().sameOrigin();
     return httpSecurity.build();
   }
 
