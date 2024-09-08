@@ -10,13 +10,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
+@PropertySource("classpath:jwt.properties")
 public class JwtService {
 
-  private static final String SECRET_KEY = "7a88f285b330ac44dae66010385842e09b34d80a020f7e4ff51970732906cd57";
+  @Value("${jwt.token.secret-key}")
+  private String secretKey;
 
   public String extractEmail(String jwt) {
     return extractClaim(jwt, Claims::getSubject);
@@ -63,7 +67,7 @@ public class JwtService {
   }
 
   private Key getSigningKey() {
-    byte[] secretKey = Decoders.BASE64.decode(SECRET_KEY);
-    return Keys.hmacShaKeyFor(secretKey);
+    byte[] key = Decoders.BASE64.decode(secretKey);
+    return Keys.hmacShaKeyFor(key);
   }
 }
