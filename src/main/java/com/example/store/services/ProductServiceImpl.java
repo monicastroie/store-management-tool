@@ -5,16 +5,21 @@ import com.example.store.entities.Product;
 import com.example.store.exceptions.ResourceNotFoundException;
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
+  Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);
+
   @Autowired
   private ProductDao productDao;
 
   public Product addProduct(Product product) {
+    LOGGER.debug("Saving a product: {}", product);
     return productDao.save(product);
   }
 
@@ -31,6 +36,7 @@ public class ProductServiceImpl implements ProductService {
   }
 
   public Product updateProductById(Product product, Long id) {
+    LOGGER.debug("Updating a product with ID {}", id);
     Product actualProduct = productDao.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Product not found with id : " + id));
 
@@ -46,6 +52,7 @@ public class ProductServiceImpl implements ProductService {
   }
 
   public Product updateProductByQuantity(Long id, Integer quantity) {
+    LOGGER.debug("Updating the quantity of a product with ID {}", id);
     Product actualProduct = productDao.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Product not found with id : " + id));
 
@@ -54,6 +61,7 @@ public class ProductServiceImpl implements ProductService {
   }
 
   public Product updateProductByPrice(Long id, Double price) {
+    LOGGER.debug("Updating the price of a product with ID {}", id);
     Product actualProduct = productDao.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Product not found with id : " + id));
 

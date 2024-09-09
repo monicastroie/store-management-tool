@@ -5,6 +5,8 @@ import com.example.store.services.ProductService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,16 +22,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/store")
 @RequiredArgsConstructor
 public class ProductController {
+  Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
   private final ProductService productService;
 
   @PostMapping("/product")
   public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
+    LOGGER.debug("Creating a product with following information {}", product);
     return ResponseEntity.ok().body(productService.addProduct(product));
   }
 
   @GetMapping("/products")
   public ResponseEntity<List<Product>> getProducts() {
+    LOGGER.debug("Retrieving the list of products.");
     return ResponseEntity.ok().body(productService.getProducts());
   }
 
@@ -37,6 +42,7 @@ public class ProductController {
   public ResponseEntity<Optional<Product>> getProduct(@PathVariable("id") Long id) {
     Optional<Product> actualProduct = productService.getProduct(id);
     if(actualProduct.isPresent()){
+      LOGGER.debug("Retrieving user with ID {}", id);
       return ResponseEntity.ok().body(actualProduct);
     }
     return ResponseEntity.notFound().build();
@@ -46,6 +52,7 @@ public class ProductController {
   public ResponseEntity<String> deleteProduct(@PathVariable("id") Long id) {
     Optional<Product> actualProduct = productService.getProduct(id);
     if(actualProduct.isPresent()){
+      LOGGER.debug("Deleting the product with ID {}.", id);
       productService.deleteProduct(actualProduct.get().getId());
       return ResponseEntity.ok().build();
     }
@@ -54,18 +61,21 @@ public class ProductController {
 
   @PutMapping("/update/product/{id}")
   public ResponseEntity<Product> updateProductById(@RequestBody Product product, @PathVariable("id") Long id) {
+    LOGGER.debug("Updating the product with ID {}.", id);
     return ResponseEntity.ok().body(productService.updateProductById(product, id));
   }
 
   @PatchMapping("/update/product/{id}/quantity/{quantity}")
   public ResponseEntity<Product> updateProductByQuantity(@PathVariable("id") Long id,
       @PathVariable("quantity") Integer quantity) {
+    LOGGER.debug("Updating the quantity to {} for the product with ID {}.", quantity, id);
     return ResponseEntity.ok().body(productService.updateProductByQuantity(id, quantity));
   }
 
   @PatchMapping("/update/product/{id}/price/{price}")
   public ResponseEntity<Product> updateProductByPrice(@PathVariable("id") Long id,
       @PathVariable("price") Double price) {
+    LOGGER.debug("Updating the price to {} for product with ID {}.", price, id);
     return ResponseEntity.ok().body(productService.updateProductByPrice(id, price));
   }
 }

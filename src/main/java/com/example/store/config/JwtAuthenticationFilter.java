@@ -1,7 +1,5 @@
 package com.example.store.config;
 
-import com.example.store.entities.User;
-import com.example.store.services.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
