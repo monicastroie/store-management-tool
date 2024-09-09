@@ -2,7 +2,6 @@ package com.example.store.services;
 
 import com.example.store.entities.Product;
 import java.util.List;
-import java.util.Optional;
 
 public interface ProductService {
 
@@ -10,7 +9,7 @@ public interface ProductService {
 
   List<Product> getProducts();
 
-  Optional<Product> getProduct(Long id);
+  Product getProduct(Long id);
 
   void deleteProduct(Long id);
 

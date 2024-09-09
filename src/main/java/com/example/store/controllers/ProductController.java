@@ -3,7 +3,6 @@ package com.example.store.controllers;
 import com.example.store.entities.Product;
 import com.example.store.services.ProductService;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,25 +42,18 @@ public class ProductController {
 
   @GetMapping("/product/{id}")
   @PreAuthorize("hasRole('USER')")
-  public ResponseEntity<Optional<Product>> getProduct(@PathVariable("id") Long id) {
-    Optional<Product> actualProduct = productService.getProduct(id);
-    if(actualProduct.isPresent()){
-      LOGGER.debug("Retrieving user with ID {}", id);
-      return ResponseEntity.ok().body(actualProduct);
-    }
-    return ResponseEntity.notFound().build();
+  public ResponseEntity<Product> getProduct(@PathVariable("id") Long id) {
+    LOGGER.debug("Retrieving user with ID {}", id);
+    Product actualProduct = productService.getProduct(id);
+    return ResponseEntity.ok().body(actualProduct);
   }
 
   @DeleteMapping("/delete/product/{id}")
   @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<String> deleteProduct(@PathVariable("id") Long id) {
-    Optional<Product> actualProduct = productService.getProduct(id);
-    if(actualProduct.isPresent()){
-      LOGGER.debug("Deleting the product with ID {}.", id);
-      productService.deleteProduct(actualProduct.get().getId());
-      return ResponseEntity.ok().build();
-    }
-    return ResponseEntity.notFound().build();
+    LOGGER.debug("Deleting the product with ID {}.", id);
+    productService.deleteProduct(id);
+    return ResponseEntity.ok().build();
   }
 
   @PutMapping("/update/product/{id}")

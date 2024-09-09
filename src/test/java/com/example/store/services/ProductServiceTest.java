@@ -61,10 +61,10 @@ class ProductServiceTest {
 
     // Then
     when(productDao.findById(FIRST_ID)).thenReturn(Optional.of(product));
-    Optional<Product> actualProduct = productService.getProduct(FIRST_ID);
+    Product actualProduct = productService.getProduct(FIRST_ID);
 
     // Assert
-    assertEquals(product, actualProduct.get(), "Should have the same values.");
+    assertEquals(product, actualProduct, "Should have the same values.");
   }
 
   @Test

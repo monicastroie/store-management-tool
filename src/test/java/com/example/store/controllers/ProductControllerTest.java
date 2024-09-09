@@ -7,11 +7,11 @@ import static org.mockito.Mockito.when;
 
 import com.example.store.config.JwtService;
 import com.example.store.entities.Product;
+import com.example.store.exceptions.ResourceNotFoundException;
 import com.example.store.services.ProductService;
 import com.example.store.util.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -79,7 +79,7 @@ class ProductControllerTest {
   void testGetProductById() throws Exception {
     //Given
     Product product = createProduct();
-    when(productService.getProduct(ID)).thenReturn(Optional.of(product));
+    when(productService.getProduct(ID)).thenReturn(product);
 
     // Then
     MvcResult result = mockMvc.perform(
@@ -106,7 +106,7 @@ class ProductControllerTest {
   @WithMockUser(roles = "USER")
   void testGetProductById_NotFound() throws Exception {
     //Given
-    when(productService.getProduct(ID)).thenReturn(Optional.empty());
+    when(productService.getProduct(ID)).thenThrow(ResourceNotFoundException.class);
 
     // Then
     mockMvc.perform(
@@ -123,7 +123,7 @@ class ProductControllerTest {
   void testDeleteProduct() throws Exception {
     //Given
     Product product = createProduct();
-    when(productService.getProduct(ID)).thenReturn(Optional.of(product));
+    when(productService.getProduct(ID)).thenReturn(product);
 
     // Then
     mockMvc.perform(
