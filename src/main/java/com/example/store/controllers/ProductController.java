@@ -1,12 +1,10 @@
 package com.example.store.controllers;
 
-import com.example.store.dao.ProductDao;
 import com.example.store.entities.Product;
 import com.example.store.services.ProductService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
   private final ProductService productService;
-  private final ProductDao productDao;
 
   @PostMapping("/product")
   public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
@@ -38,7 +35,7 @@ public class ProductController {
 
   @GetMapping("/product/{id}")
   public ResponseEntity<Optional<Product>> getProduct(@PathVariable("id") Long id) {
-    Optional<Product> actualProduct = productDao.findById(id);
+    Optional<Product> actualProduct = productService.getProduct(id);
     if(actualProduct.isPresent()){
       return ResponseEntity.ok().body(actualProduct);
     }
@@ -47,7 +44,7 @@ public class ProductController {
 
   @DeleteMapping("/delete/product/{id}")
   public ResponseEntity<String> deleteProduct(@PathVariable("id") Long id) {
-    Optional<Product> actualProduct = productDao.findById(id);
+    Optional<Product> actualProduct = productService.getProduct(id);
     if(actualProduct.isPresent()){
       productService.deleteProduct(actualProduct.get().getId());
       return ResponseEntity.ok().build();
