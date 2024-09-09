@@ -20,6 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -46,6 +47,7 @@ class ProductControllerTest {
   private JwtService jwtService;
 
   @Test
+  @WithMockUser(roles = "USER")
   void testAddProduct() throws Exception {
     // Given
     Product product = createProduct();
@@ -54,7 +56,7 @@ class ProductControllerTest {
     // Then
     MvcResult result = mockMvc.perform(
             MockMvcRequestBuilders.post("/api/v1/store/product")
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + JwtUtil.generateToken("email", List.of("ROLE_USER")))
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + JwtUtil.generateToken("email", List.of("USER")))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(product)))
         .andExpect(MockMvcResultMatchers.status().isOk())
@@ -73,6 +75,7 @@ class ProductControllerTest {
   }
 
   @Test
+  @WithMockUser(roles = "USER")
   void testGetProductById() throws Exception {
     //Given
     Product product = createProduct();
@@ -81,7 +84,7 @@ class ProductControllerTest {
     // Then
     MvcResult result = mockMvc.perform(
             MockMvcRequestBuilders.get("/api/v1/store/product/{id}", ID)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + JwtUtil.generateToken("email", List.of("ROLE_USER")))
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + JwtUtil.generateToken("email", List.of("USER")))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andReturn();
@@ -100,6 +103,7 @@ class ProductControllerTest {
   }
 
   @Test
+  @WithMockUser(roles = "USER")
   void testGetProductById_NotFound() throws Exception {
     //Given
     when(productService.getProduct(ID)).thenReturn(Optional.empty());
@@ -108,13 +112,14 @@ class ProductControllerTest {
     mockMvc.perform(
           MockMvcRequestBuilders.get("/api/v1/store/product/{id}", ID)
               .header(HttpHeaders.AUTHORIZATION,
-                  "Bearer " + JwtUtil.generateToken("email", List.of("ROLE_USER")))
+                  "Bearer " + JwtUtil.generateToken("email", List.of("USER")))
               .contentType(MediaType.APPLICATION_JSON))
       .andExpect(MockMvcResultMatchers.status().isNotFound())
       .andReturn();
   }
 
   @Test
+  @WithMockUser(roles = "ADMIN")
   void testDeleteProduct() throws Exception {
     //Given
     Product product = createProduct();
@@ -124,13 +129,14 @@ class ProductControllerTest {
     mockMvc.perform(
           MockMvcRequestBuilders.delete("/api/v1/store/delete/product/{id}", ID)
               .header(HttpHeaders.AUTHORIZATION,
-                  "Bearer " + JwtUtil.generateToken("email", List.of("ROLE_USER")))
+                  "Bearer " + JwtUtil.generateToken("email", List.of("ADMIN")))
               .contentType(MediaType.APPLICATION_JSON))
       .andExpect(MockMvcResultMatchers.status().isOk())
       .andReturn();
   }
 
   @Test
+  @WithMockUser(roles = "USER")
   void testUpdateProductById() throws Exception {
     //Given
     Product newProduct = createProduct();
@@ -140,7 +146,7 @@ class ProductControllerTest {
     // Then
     MvcResult result = mockMvc.perform(
             MockMvcRequestBuilders.put("/api/v1/store/update/product/{id}", ID)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + JwtUtil.generateToken("email", List.of("ROLE_USER")))
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + JwtUtil.generateToken("email", List.of("USER")))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(newProduct)))
         .andExpect(MockMvcResultMatchers.status().isOk())
@@ -155,6 +161,7 @@ class ProductControllerTest {
   }
 
   @Test
+  @WithMockUser(roles = "USER")
   void testUpdateProductByPrice() throws Exception {
     //Given
     Double newPrice = 30.50;
@@ -165,7 +172,7 @@ class ProductControllerTest {
     // Then
     MvcResult result = mockMvc.perform(
             MockMvcRequestBuilders.patch("/api/v1/store/update/product/{id}/price/{price}", ID, newPrice)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + JwtUtil.generateToken("email", List.of("ROLE_USER")))
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + JwtUtil.generateToken("email", List.of("USER")))
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andReturn();

@@ -13,6 +13,7 @@ public class UserUtil {
         .fullName("John Snow")
         .email("john.snow@gmail.com")
         .password("1234")
+        .role("ROLE_USER")
         .build();
   }
 

@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
         .fullName(request.getFullName())
         .email(request.getEmail())
         .password(passwordEncoder.encode(request.getPassword()))
-        .role(Role.ROLE_USER)
+        .role(Role.valueOf(request.getRole()))
         .build();
     userDao.save(user);
     return AuthenticationResponse.builder()
