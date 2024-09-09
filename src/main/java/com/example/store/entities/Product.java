@@ -28,7 +28,6 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Product implements Serializable {
 
-  @Getter
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -56,57 +55,5 @@ public class Product implements Serializable {
     this.price = price;
     this.initialQuantity = initialQuantity;
     this.quantity = quantity;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public Double getPrice() {
-    return price;
-  }
-
-  public void setPrice(Double price) {
-    this.price = price;
-  }
-
-  public Integer getInitialQuantity() {
-    return initialQuantity;
-  }
-
-  public void setInitialQuantity(Integer initialQuantity) {
-    this.initialQuantity = initialQuantity;
-  }
-
-  public Integer getQuantity() {
-    return quantity;
-  }
-
-  public LocalDate getStartOfWeek() {
-    return startOfWeek;
-  }
-
-  public void setStartOfWeek(LocalDate startOfWeek) {
-    this.startOfWeek = startOfWeek;
-  }
-
-  public LocalDate getEndOfWeek() {
-    return endOfWeek;
-  }
-
-  public void setEndOfWeek(LocalDate endOfWeek) {
-    this.endOfWeek = endOfWeek;
   }
 }
