@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
-  Logger LOGGER = LoggerFactory.getLogger(AuthenticationController.class);
 
+  private final Logger LOGGER = LoggerFactory.getLogger(AuthenticationController.class);
   private final UserService userService;
 
   @PostMapping("/register")

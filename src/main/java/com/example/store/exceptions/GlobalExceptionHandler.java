@@ -20,6 +20,12 @@ public class GlobalExceptionHandler {
         .body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage()));
   }
 
+  @ExceptionHandler(UnauthorizedAccessException.class)
+  public ResponseEntity<ErrorResponse> handleUnauthorizedAccessException(UnauthorizedAccessException e) {
+    return ResponseEntity.status(HttpStatus.FORBIDDEN)
+        .body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage()));
+  }
+
   @ExceptionHandler(value= HttpRequestMethodNotSupportedException.class)
   @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
   public @ResponseBody ErrorResponse handleHttpRequestMethodNotSupportedException (
@@ -44,5 +50,11 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ErrorResponse> handeDataIntegrityViolationException(DataIntegrityViolationException e) {
     return ResponseEntity.status(HttpStatus.FORBIDDEN)
         .body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), e.getMessage()));
+  }
+
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<?> handleGlobalException(Exception e) {
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
   }
 }

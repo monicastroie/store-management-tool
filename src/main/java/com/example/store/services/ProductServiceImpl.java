@@ -3,10 +3,12 @@ package com.example.store.services;
 import com.example.store.dao.ProductDao;
 import com.example.store.entities.Product;
 import com.example.store.exceptions.ResourceNotFoundException;
+import com.example.store.exceptions.UnauthorizedAccessException;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,6 +33,9 @@ public class ProductServiceImpl implements ProductService {
   }
 
   public void deleteProduct(Long id) {
+    if (!hasAdminRole()) {
+      throw new UnauthorizedAccessException("This user is not authorized to delete products.");
+    }
     Product product = productDao.findById(id).orElseThrow(() -> new ResourceNotFoundException(("Product not found with id: " +id)));
     productDao.deleteById(id);
   }
@@ -69,4 +74,9 @@ public class ProductServiceImpl implements ProductService {
     return productDao.save(actualProduct);
   }
 
+  private boolean hasAdminRole() {
+    return SecurityContextHolder.getContext().getAuthentication()
+        .getAuthorities().stream()
+        .anyMatch(role -> role.getAuthority().equals("ROLE_ADMIN"));
+  }
 }

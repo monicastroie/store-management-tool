@@ -22,8 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/store")
 @RequiredArgsConstructor
 public class ProductController {
-  Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
-
+  private final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
   private final ProductService productService;
 
   @PostMapping("/product")
