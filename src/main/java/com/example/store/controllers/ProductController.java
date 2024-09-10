@@ -43,8 +43,7 @@ public class ProductController {
   @PreAuthorize("hasRole('USER')")
   public ResponseEntity<Product> getProduct(@PathVariable("id") Long id) {
     LOGGER.debug("Retrieving user with ID {}", id);
-    Product actualProduct = productService.getProduct(id);
-    return ResponseEntity.ok().body(actualProduct);
+    return ResponseEntity.ok().body(productService.getProduct(id));
   }
 
   @DeleteMapping("/delete/product/{id}")

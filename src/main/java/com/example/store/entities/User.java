@@ -18,7 +18,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
- *  Represents an user in the store management application.
+ *  Represents a user in the store management application.
  *  Each user has an id, name, email, password, and a role
  */
 @Data
