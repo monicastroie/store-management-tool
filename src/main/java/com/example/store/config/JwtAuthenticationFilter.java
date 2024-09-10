@@ -2,6 +2,7 @@ package com.example.store.config;
 
 import com.example.store.controllers.ProductController;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -55,7 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
           }
         }
-    } catch (ExpiredJwtException exception) {
+    } catch (ExpiredJwtException | SignatureException exception) {
       LOGGER.error(exception.getMessage());
       throw exception;
     }

@@ -1,6 +1,7 @@
 package com.example.store.exceptions;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,6 +54,12 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(value= ExpiredJwtException.class)
   public ResponseEntity<ErrorResponse> handeExpiredJwtException(ExpiredJwtException e) {
+    return ResponseEntity.status(HttpStatus.FORBIDDEN)
+        .body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), e.getMessage()));
+  }
+
+  @ExceptionHandler(value= SignatureException.class)
+  public ResponseEntity<ErrorResponse> handeSignatureException(SignatureException e) {
     return ResponseEntity.status(HttpStatus.FORBIDDEN)
         .body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), e.getMessage()));
   }

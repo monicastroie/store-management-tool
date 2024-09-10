@@ -1,5 +1,6 @@
 package com.example.store.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -35,6 +36,7 @@ public class User implements UserDetails, Serializable {
 
   private String fullName;
 
+  @Column(unique = true, nullable = false)
   private String email;
 
   private String password;
