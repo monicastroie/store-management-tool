@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * Represents a centralized exception handling for managing
+ * the exceptions thrown across the entire application.
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
