@@ -24,7 +24,7 @@ This implementation mostly represents the management of products in a store. Wit
 
 ## User Roles
 
-- **Admin**: can see all the products and delete any product
+- **Admin**: can manage all operations
 - **User**: can create or update a product
 
 ## Implementation
