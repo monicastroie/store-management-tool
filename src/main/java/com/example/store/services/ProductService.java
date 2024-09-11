@@ -41,14 +41,14 @@ public interface ProductService {
   /**
    * Method for updating the quantity of a given product
    * @param id
-   * @param quantity
+   * @param product
    */
-  Product updateProductByQuantity(Long id, Integer quantity);
+  Product updateProductByQuantity(Long id, Product product);
 
   /**
    * Method for updating the price of a given product
    * @param id
-   * @param price
+   * @param product
    */
-  Product updateProductByPrice(Long id, Double price);
+  Product updateProductByPrice(Long id, Product product);
 }

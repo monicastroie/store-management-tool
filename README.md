@@ -18,7 +18,7 @@ This implementation mostly represents the management of products in a store. Wit
 - Creation of products: Allows user to create a product
 - List all the products: Allows admin to see all the products
 - Delete a product: Allows admin to delete a product by ID
-- Update a product: Allows a user to update a product by ID and a new version of Product object
+- Update a product: Allows a user to update a product by ID, creating a new version of Product object
 - Update a product by price field: Allows a user to update the price of a product
 - Update a product by quantity field: Allows a user to update the quantity of a product
 
@@ -29,7 +29,7 @@ This implementation mostly represents the management of products in a store. Wit
 
 ## Implementation
 
-I have generated my Spring Boot project using Spring Initialzr where I choose **Maven**, **Java 17**, **Spring Boot 3.3.3** and added all the **dependencies** that I considered important to start the implementation.
+I have generated my Spring Boot project using Spring Initialzr where I selected **Maven**, **Java 17**, **Spring Boot 3.3.3** and added all the **dependencies** that I considered important to start the implementation.
 After all these I generated the project and I opened it in IntelliJ. 
 
 ### Database connection
@@ -43,15 +43,15 @@ After all these I generated the project and I opened it in IntelliJ.
 
 ### Application Architecture
 
-1. Controller Layer - handle incoming HTTP requests
+1. Controller Layer - handle incoming HTTP requests\
 This layer will include @RestController classes that map to specific API endpoints.
-2. Service Layer - business logic
+2. Service Layer - business logic\
 This layer will contain service classes that include business logic for managing products and users.
-3. Repository Layer - data access
+3. Repository Layer - data access\
 This layer will user spring Data JPA repositories to interact with database.
-4. Entity Layer - data model
+4. Entity Layer - data model\
 This layer represents the database tables, and they are annotated with JPA annotations like @Entity, @Table, @Id.
-5. Database - to persist the data.
+5. Database - to persist the data
 
 ### Entity layer
 I defined 2 entities in this application:
@@ -69,20 +69,19 @@ The @RestController classes handle incoming HTTP requests. They are using @Reque
 
 ### Security Layer
 JWT (Json Web Token) is a stateless, token-based authentication system, where users authenticate by receiving a signed token that is then sent in the headers of requests to authenticate and authorize access to resources.
-When a client send an HTTP request to our running application.
-The first thing that is executed when our application receive the call is a filter which is once per request filter and has the role to validate and check everythinh regarding the token.
-The first thing that will happen will be an internal check that verify that we have the JWT token present or not. If the token will be missing an error will be raised and the client will receive a 403 response.
-If the JWT token is present then we will start the process of validation . This process will make a call using UserDetailsService to try to fetch the user information from the database. This validation will be done using the email value (extracted from the token).
-Once the user is fetched, we will receive a response from the database. In case the user does not exist than we will send a response to client an HTTP 403 status and a message that the given user doesn't exist.
-In case we receive a valid user from database, it will be started the validation process for the given JWT token.
+When a client sends an HTTP request to our running application, the first thing that is executed when our application receives the call is a filter which is "once per request" filter and has the role to validate and check everything regarding the token.
+The first thing that will happen will be an internal check to verify that we have the JWT token present or not. If the token will be missing an error will be raised and the client will receive a 403 response.
+If the JWT token is present then we will start the process of validation. This process will make a call using UserDetailsService to try to fetch the user information from the database. This validation will be done using the email value (extracted from the token).
+Once the user is fetched, we will receive a response from the database. In case the user does not exist then we will send an HTTP 403 response to client and a message that the given user doesn't exist.
+In case we receive a valid user from database, the validation process for the given JWT token will be started.
 Given the fact that JWT token is generated for a specific user, we have to validate this token based on his user.
 So we have the validate JWT token mechanism that will call a service that will take as parameters the user itself and the token.
 After the execution of this validation process we have two cases. First one, the token is not valid (ex: the token is expired, the token does not match that specific user). So, in this case we will send to client an HTTP 403 status with message "Invalid JWT token".
 Otherwise, we will update the SecurityContextHolder and will set this user as authenticated, and we will update the authentication manager. 
-In moment in SecurityContextHolder will be updated, automatically dispatch the request and it be sent to the dispatcher servlet and from there will be sent to the controller. 
+When SecurityContextHolder will be updated, it automatically dispatches the request so, it can be sent to the dispatcher servlet and from there will be sent to the controller. 
 In the end, a response will be sent back to the client.
 
-In order to implement this I needed a class that generate and validate a JWT token, process that uses a SECRET_KEY that has been stored in a properties file, and it is read from there.
+In order to implement this I needed a class that generates and validates a JWT token, process that uses a SECRET_KEY that has been stored in a properties file, and it is read from there.
 I've created a User class that implements UserDetails, used to fetch user information during authentication.
 Also, a filter class was created for intercepting request, do the checks for the JWT token, and set the authentication if the token is valid.
 In the end, I need to configure Spring Security class to authenticate with JWT and to secure my API endpoints.

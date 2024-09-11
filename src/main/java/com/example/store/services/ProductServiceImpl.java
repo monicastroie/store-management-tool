@@ -25,7 +25,7 @@ public class ProductServiceImpl implements ProductService {
   }
 
   public List<Product> getProducts() {
-    return (List<Product>) productDao.findAll();
+    return productDao.findAll();
   }
 
   public Product getProduct(Long id) {
@@ -56,21 +56,25 @@ public class ProductServiceImpl implements ProductService {
       return productDao.save(actualProduct);
   }
 
-  public Product updateProductByQuantity(Long id, Integer quantity) {
+  public Product updateProductByQuantity(Long id, Product product) {
     LOGGER.debug("Updating the quantity of a product with ID {}", id);
     Product actualProduct = productDao.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Product not found with id : " + id));
 
-    actualProduct.setQuantity(quantity);
+    if (product.getQuantity() != null) {
+      actualProduct.setQuantity(product.getQuantity());
+    }
     return productDao.save(actualProduct);
   }
 
-  public Product updateProductByPrice(Long id, Double price) {
+  public Product updateProductByPrice(Long id, Product product) {
     LOGGER.debug("Updating the price of a product with ID {}", id);
     Product actualProduct = productDao.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Product not found with id : " + id));
 
-    actualProduct.setPrice(price);
+    if (product.getPrice() != null) {
+      actualProduct.setPrice(product.getPrice());
+    }
     return productDao.save(actualProduct);
   }
 

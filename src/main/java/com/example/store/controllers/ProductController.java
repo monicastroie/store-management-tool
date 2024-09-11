@@ -42,7 +42,7 @@ public class ProductController {
   @GetMapping("/product/{id}")
   @PreAuthorize("hasRole('USER')")
   public ResponseEntity<Product> getProduct(@PathVariable("id") Long id) {
-    LOGGER.debug("Retrieving user with ID {}", id);
+    LOGGER.debug("Retrieving product with ID {}", id);
     return ResponseEntity.ok().body(productService.getProduct(id));
   }
 
@@ -61,19 +61,19 @@ public class ProductController {
     return ResponseEntity.ok().body(productService.updateProductById(product, id));
   }
 
-  @PatchMapping("/update/product/{id}/quantity/{quantity}")
+  @PatchMapping("/update/product/{id}/quantity")
   @PreAuthorize("hasRole('USER')")
   public ResponseEntity<Product> updateProductByQuantity(@PathVariable("id") Long id,
-      @PathVariable("quantity") Integer quantity) {
-    LOGGER.debug("Updating the quantity to {} for the product with ID {}.", quantity, id);
-    return ResponseEntity.ok().body(productService.updateProductByQuantity(id, quantity));
+      @RequestBody Product product) {
+    LOGGER.debug("Updating the quantity for the product with ID {}.", id);
+    return ResponseEntity.ok().body(productService.updateProductByQuantity(id, product));
   }
 
-  @PatchMapping("/update/product/{id}/price/{price}")
+  @PatchMapping("/update/product/{id}/price")
   @PreAuthorize("hasRole('USER')")
   public ResponseEntity<Product> updateProductByPrice(@PathVariable("id") Long id,
-      @PathVariable("price") Double price) {
-    LOGGER.debug("Updating the price to {} for product with ID {}.", price, id);
-    return ResponseEntity.ok().body(productService.updateProductByPrice(id, price));
+      @RequestBody Product product) {
+    LOGGER.debug("Updating the price for product with ID {}.", id);
+    return ResponseEntity.ok().body(productService.updateProductByPrice(id, product));
   }
 }

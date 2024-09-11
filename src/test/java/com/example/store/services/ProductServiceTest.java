@@ -91,7 +91,7 @@ class ProductServiceTest {
     // When
     when(productDao.findById(FIRST_ID)).thenReturn(Optional.of(product));
     when(productDao.save(updatedProduct)).thenReturn(updatedProduct);
-    Product actualProduct = productService.updateProductByPrice(FIRST_ID, SECOND_PRICE);
+    Product actualProduct = productService.updateProductByPrice(FIRST_ID, updatedProduct);
 
     // Assert
     assertEquals(updatedProduct, actualProduct, "Should have the same values.");

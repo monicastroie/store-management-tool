@@ -167,13 +167,14 @@ class ProductControllerTest {
     Double newPrice = 30.50;
     Product product = createProduct();
     product.setPrice(newPrice);
-    when(productService.updateProductByPrice(ID, newPrice)).thenReturn(product);
+    when(productService.updateProductByPrice(ID, product)).thenReturn(product);
 
     // Then
     MvcResult result = mockMvc.perform(
-            MockMvcRequestBuilders.patch("/api/v1/store/update/product/{id}/price/{price}", ID, newPrice)
+            MockMvcRequestBuilders.patch("/api/v1/store/update/product/{id}/price", ID, newPrice)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + JwtUtil.generateToken("email", List.of("USER")))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(product)))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andReturn();
 
